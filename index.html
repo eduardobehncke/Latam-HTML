@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HTMTZ7N8BJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HTMTZ7N8BJ');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LATAM Ofertas</title>
@@ -332,7 +340,7 @@
                 <div class="antes">${clp(o.antes)}</div>
                 <div class="ahora">${clp(o.ahora)}</div>
               </div>
-              <button class="btn" data-destino="${o.destino}">Comprar</button>
+              <button class="btn cta-principal" data-destino="${o.destino}">Comprar</button>
             </div>
           </article>`).join("");
     }
@@ -364,6 +372,19 @@
       e.preventDefault();
       e.target.reset();
       aviso("¡Listo! Te avisaremos de nuevas ofertas");
+    });
+  </script>
+  <script>
+    // Envía el evento clic_cta_principal cuando el visitante hace clic en "Comprar".
+    // Se delega en el documento porque las tarjetas de oferta se vuelven a dibujar al filtrar.
+    document.addEventListener('click', function (e) {
+      var boton = e.target.closest('#cta-principal, .cta-principal');
+      if (!boton) return;
+      var seccion = boton.closest('section');
+      gtag('event', 'clic_cta_principal', {
+        ubicacion: seccion && seccion.id ? seccion.id : 'sin_seccion',
+        destino: boton.dataset.destino
+      });
     });
   </script>
 </body>
