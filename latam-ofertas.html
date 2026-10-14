@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LATAM Ofertas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul: #1b0088;
+      --azul-osc: #10004f;
+      --coral: #e8114b;
+      --fondo: #f4f5fa;
+      --texto: #1d1d2c;
+      --gris: #6b6b80;
+      --borde: #e2e3ee;
+      --blanco: #ffffff;
+      --radio: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", system-ui, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .contenedor { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+
+    /* ---------- Header ---------- */
+    header {
+      background: var(--blanco);
+      border-bottom: 1px solid var(--borde);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.6rem; color: var(--azul); letter-spacing: 1px; }
+    .logo svg { width: 34px; height: 34px; }
+    .nav ul { display: flex; gap: 28px; list-style: none; font-size: .95rem; font-weight: 500; }
+    .nav ul a:hover { color: var(--coral); }
+    .btn-login {
+      border: 2px solid var(--azul); color: var(--azul); padding: 7px 18px;
+      border-radius: 999px; font-weight: 600; font-size: .9rem;
+    }
+    .btn-login:hover { background: var(--azul); color: var(--blanco); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: linear-gradient(120deg, var(--azul-osc), var(--azul) 55%, #3a1fc4);
+      color: var(--blanco);
+      padding: 56px 0 96px;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ""; position: absolute; right: -120px; top: -120px;
+      width: 420px; height: 420px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,17,75,.45), transparent 70%);
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; max-width: 640px; }
+    .hero h1 span { color: #ff6f91; }
+    .hero p { margin-top: 12px; font-size: 1.1rem; opacity: .85; max-width: 520px; }
+
+    /* ---------- Buscador ---------- */
+    .buscador {
+      background: var(--blanco); border-radius: var(--radio);
+      box-shadow: 0 12px 32px rgba(16,0,79,.15);
+      margin-top: -60px; position: relative; z-index: 2;
+      padding: 20px;
+      display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 12px; align-items: end;
+    }
+    .campo label { display: block; font-size: .75rem; font-weight: 600; color: var(--gris); margin-bottom: 4px; text-transform: uppercase; }
+    .campo input, .campo select {
+      width: 100%; padding: 11px 12px; border: 1px solid var(--borde);
+      border-radius: 10px; font: inherit; font-size: .95rem; background: var(--fondo);
+    }
+    .btn {
+      background: var(--coral); color: var(--blanco); border: none;
+      padding: 12px 26px; border-radius: 10px; font: inherit; font-weight: 600;
+      cursor: pointer; transition: transform .15s, background .15s;
+    }
+    .btn:hover { background: #c40d3e; transform: translateY(-1px); }
+
+    /* ---------- Layout principal ---------- */
+    main { padding: 48px 0 64px; }
+    .grid-principal { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
+    .titulo-seccion { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
+    .titulo-seccion h2 { font-size: 1.5rem; color: var(--azul); }
+    .filtros { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filtro {
+      border: 1px solid var(--borde); background: var(--blanco); padding: 6px 14px;
+      border-radius: 999px; font: inherit; font-size: .85rem; cursor: pointer;
+    }
+    .filtro.activo { background: var(--azul); color: var(--blanco); border-color: var(--azul); }
+
+    /* ---------- Lista de ofertas ---------- */
+    .ofertas { display: flex; flex-direction: column; gap: 14px; }
+    .oferta {
+      background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio);
+      display: grid; grid-template-columns: 110px 1fr auto; overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .oferta:hover { box-shadow: 0 8px 24px rgba(16,0,79,.1); transform: translateY(-2px); }
+    .oferta .img { background-size: cover; background-position: center; min-height: 100px; }
+    .oferta .info { padding: 14px 18px; }
+    .oferta .ruta { font-weight: 600; font-size: 1.05rem; }
+    .oferta .detalle { color: var(--gris); font-size: .85rem; }
+    .etiqueta {
+      display: inline-block; background: #ffe6ed; color: var(--coral);
+      font-size: .72rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; margin-top: 6px;
+    }
+    .oferta .precio { padding: 14px 18px; text-align: right; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+    .precio .antes { text-decoration: line-through; color: var(--gris); font-size: .8rem; }
+    .precio .ahora { font-size: 1.35rem; font-weight: 700; color: var(--azul); }
+    .precio .btn { padding: 8px 16px; font-size: .85rem; }
+
+    /* ---------- Sidebar: ofertas personalizadas ---------- */
+    aside { position: sticky; top: 88px; display: flex; flex-direction: column; gap: 16px; }
+    .personalizadas {
+      background: var(--blanco); border: 2px solid var(--azul); border-radius: var(--radio); padding: 20px;
+    }
+    .personalizadas h3 { color: var(--azul); font-size: 1.1rem; }
+    .personalizadas > p { color: var(--gris); font-size: .85rem; margin-bottom: 14px; }
+    .card-perso {
+      border-radius: 12px; overflow: hidden; margin-bottom: 14px; position: relative; color: var(--blanco);
+      min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px;
+      background-size: cover; background-position: center;
+    }
+    .card-perso::before { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 20%, rgba(16,0,79,.85)); }
+    .card-perso > * { position: relative; }
+    .card-perso .badge { position: absolute; top: 10px; left: 10px; background: var(--coral); font-size: .7rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+    .card-perso strong { font-size: 1.05rem; }
+    .card-perso small { opacity: .85; }
+    .card-perso .monto { font-size: 1.3rem; font-weight: 700; }
+
+    .newsletter { background: var(--azul); color: var(--blanco); border-radius: var(--radio); padding: 20px; }
+    .newsletter h4 { margin-bottom: 6px; }
+    .newsletter p { font-size: .85rem; opacity: .85; margin-bottom: 12px; }
+    .newsletter form { display: flex; gap: 8px; }
+    .newsletter input { flex: 1; min-width: 0; padding: 10px; border-radius: 8px; border: none; font: inherit; font-size: .85rem; }
+
+    /* ---------- Footer ---------- */
+    footer { background: var(--azul-osc); color: #c9c6e8; padding: 40px 0 24px; font-size: .9rem; }
+    .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 28px; }
+    footer h5 { color: var(--blanco); font-size: .95rem; margin-bottom: 10px; }
+    footer ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    footer a:hover { color: var(--blanco); }
+    .copy { border-top: 1px solid rgba(255,255,255,.15); padding-top: 18px; font-size: .8rem; text-align: center; }
+
+    /* ---------- Toast ---------- */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--texto); color: var(--blanco); padding: 12px 22px; border-radius: 10px;
+      font-size: .9rem; transition: transform .3s; z-index: 50;
+    }
+    .toast.visible { transform: translateX(-50%) translateY(0); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .grid-principal { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .buscador { grid-template-columns: 1fr 1fr; }
+      .buscador .btn { grid-column: span 2; }
+      .nav ul { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .buscador { grid-template-columns: 1fr; }
+      .buscador .btn { grid-column: auto; }
+      .oferta { grid-template-columns: 1fr; }
+      .oferta .img { min-height: 130px; }
+      .oferta .precio { text-align: left; flex-direction: row; align-items: center; justify-content: space-between; padding-top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header (logo del wireframe) -->
+  <header>
+    <div class="contenedor nav">
+      <a href="#" class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+        </svg>
+        LATAM
+      </a>
+      <ul>
+        <li><a href="#ofertas">Ofertas</a></li>
+        <li><a href="#">Mis viajes</a></li>
+        <li><a href="#">Check-in</a></li>
+        <li><a href="#">Ayuda</a></li>
+      </ul>
+      <a href="#" class="btn-login">Iniciar sesión</a>
+    </div>
+  </header>
+
+  <!-- Banner principal del wireframe -->
+  <section class="hero">
+    <div class="contenedor">
+      <h1>¡Compra vuelos en <span>OFERTA</span> aquí!</h1>
+      <p>Descuentos de hasta 45% en destinos nacionales e internacionales. Solo por tiempo limitado.</p>
+    </div>
+  </section>
+
+  <div class="contenedor">
+    <form class="buscador" id="buscador">
+      <div class="campo">
+        <label for="origen">Origen</label>
+        <input id="origen" type="text" value="Santiago (SCL)">
+      </div>
+      <div class="campo">
+        <label for="destino">Destino</label>
+        <input id="destino" type="text" placeholder="¿A dónde vas?">
+      </div>
+      <div class="campo">
+        <label for="ida">Ida</label>
+        <input id="ida" type="date">
+      </div>
+      <div class="campo">
+        <label for="pasajeros">Pasajeros</label>
+        <select id="pasajeros">
+          <option>1 adulto</option><option>2 adultos</option><option>3 adultos</option><option>4 adultos</option>
+        </select>
+      </div>
+      <button class="btn" type="submit">Buscar vuelos</button>
+    </form>
+  </div>
+
+  <main class="contenedor">
+    <div class="grid-principal">
+
+      <!-- Columna izquierda: lista de ofertas (las líneas del wireframe) -->
+      <section id="ofertas">
+        <div class="titulo-seccion">
+          <h2>Ofertas destacadas</h2>
+          <div class="filtros">
+            <button class="filtro activo" data-filtro="todas">Todas</button>
+            <button class="filtro" data-filtro="nacional">Nacionales</button>
+            <button class="filtro" data-filtro="internacional">Internacionales</button>
+          </div>
+        </div>
+        <div class="ofertas" id="lista-ofertas"></div>
+      </section>
+
+      <!-- Columna derecha: "Acá 2 ofertas personalizadas" -->
+      <aside>
+        <div class="personalizadas">
+          <h3>Ofertas para ti</h3>
+          <p>Elegidas según tus búsquedas recientes</p>
+
+          <a href="#" class="card-perso" style="background-image:url('https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&q=70')">
+            <span class="badge">-40%</span>
+            <strong>Santiago → Cusco</strong>
+            <small>Ida y vuelta · Nov – Dic</small>
+            <span class="monto">$189.990</span>
+          </a>
+
+          <a href="#" class="card-perso" style="background-image:url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&q=70')">
+            <span class="badge">-35%</span>
+            <strong>Santiago → Río de Janeiro</strong>
+            <small>Ida y vuelta · Ene – Feb</small>
+            <span class="monto">$259.990</span>
+          </a>
+        </div>
+
+        <div class="newsletter">
+          <h4>No te pierdas ninguna oferta</h4>
+          <p>Recibe las mejores tarifas en tu correo.</p>
+          <form id="form-news">
+            <input type="email" placeholder="tu@correo.com" required>
+            <button class="btn" type="submit">Suscribirme</button>
+          </form>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Footer (la línea inferior del wireframe) -->
+  <footer>
+    <div class="contenedor">
+      <div class="footer-grid">
+        <div>
+          <h5>Sobre nosotros</h5>
+          <ul><li><a href="#">Quiénes somos</a></li><li><a href="#">Trabaja con nosotros</a></li><li><a href="#">Sostenibilidad</a></li></ul>
+        </div>
+        <div>
+          <h5>Tu viaje</h5>
+          <ul><li><a href="#">Equipaje</a></li><li><a href="#">Check-in online</a></li><li><a href="#">Estado de vuelo</a></li></ul>
+        </div>
+        <div>
+          <h5>Ayuda</h5>
+          <ul><li><a href="#">Centro de ayuda</a></li><li><a href="#">Cambios y devoluciones</a></li><li><a href="#">Contacto</a></li></ul>
+        </div>
+        <div>
+          <h5>Programa de pasajero frecuente</h5>
+          <ul><li><a href="#">Acumula millas</a></li><li><a href="#">Canjea millas</a></li></ul>
+        </div>
+      </div>
+      <p class="copy">© 2026 · Proyecto de práctica basado en wireframe. Precios referenciales en CLP.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const ofertas = [
+      { origen: "Santiago", destino: "Puerto Montt", tipo: "nacional", fechas: "Oct – Nov", antes: 89990, ahora: 49990, img: "photo-1518182170546-07661fd94144", etiqueta: "Últimos asientos" },
+      { origen: "Santiago", destino: "Lima", tipo: "internacional", fechas: "Nov – Dic", antes: 219990, ahora: 139990, img: "photo-1531968455001-5c5272a41129", etiqueta: "-36%" },
+      { origen: "Santiago", destino: "Calama", tipo: "nacional", fechas: "Oct – Dic", antes: 79990, ahora: 44990, img: "photo-1547234935-80c7145ec969", etiqueta: "-44%" },
+      { origen: "Santiago", destino: "Buenos Aires", tipo: "internacional", fechas: "Dic – Mar", antes: 189990, ahora: 119990, img: "photo-1589909202802-8f4aadce1849", etiqueta: "Más vendido" },
+      { origen: "Santiago", destino: "Punta Arenas", tipo: "nacional", fechas: "Ene – Feb", antes: 139990, ahora: 89990, img: "photo-1531761535209-180857e963b9", etiqueta: "-36%" },
+      { origen: "Santiago", destino: "Miami", tipo: "internacional", fechas: "Feb – Abr", antes: 699990, ahora: 459990, img: "photo-1506966953602-c20cc11f75e3", etiqueta: "-34%" },
+      { origen: "Santiago", destino: "Isla de Pascua", tipo: "nacional", fechas: "Mar – May", antes: 399990, ahora: 259990, img: "photo-1584713503693-bb386ec95cf2", etiqueta: "Destino estrella" },
+    ];
+
+    const clp = n => "$" + n.toLocaleString("es-CL");
+    const lista = document.getElementById("lista-ofertas");
+
+    function render(filtro = "todas") {
+      lista.innerHTML = ofertas
+        .filter(o => filtro === "todas" || o.tipo === filtro)
+        .map(o => `
+          <article class="oferta">
+            <div class="img" style="background-image:url('https://images.unsplash.com/${o.img}?w=300&q=60'), linear-gradient(135deg,#1b0088,#e8114b)"></div>
+            <div class="info">
+              <div class="ruta">${o.origen} → ${o.destino}</div>
+              <div class="detalle">Ida y vuelta · ${o.fechas} · ${o.tipo === "nacional" ? "Vuelo nacional" : "Vuelo internacional"}</div>
+              <span class="etiqueta">${o.etiqueta}</span>
+            </div>
+            <div class="precio">
+              <div>
+                <div class="antes">${clp(o.antes)}</div>
+                <div class="ahora">${clp(o.ahora)}</div>
+              </div>
+              <button class="btn" data-destino="${o.destino}">Comprar</button>
+            </div>
+          </article>`).join("");
+    }
+    render();
+
+    document.querySelectorAll(".filtro").forEach(b => b.addEventListener("click", () => {
+      document.querySelectorAll(".filtro").forEach(x => x.classList.remove("activo"));
+      b.classList.add("activo");
+      render(b.dataset.filtro);
+    }));
+
+    const toast = document.getElementById("toast");
+    function aviso(msg) {
+      toast.textContent = msg;
+      toast.classList.add("visible");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.classList.remove("visible"), 2500);
+    }
+
+    lista.addEventListener("click", e => {
+      if (e.target.matches("button[data-destino]")) aviso(`✈️ Oferta a ${e.target.dataset.destino} añadida a tu carro`);
+    });
+    document.getElementById("buscador").addEventListener("submit", e => {
+      e.preventDefault();
+      const d = document.getElementById("destino").value.trim();
+      aviso(d ? `Buscando vuelos a ${d}...` : "Ingresa un destino para buscar");
+    });
+    document.getElementById("form-news").addEventListener("submit", e => {
+      e.preventDefault();
+      e.target.reset();
+      aviso("¡Listo! Te avisaremos de nuevas ofertas");
+    });
+  </script>
+</body>
+</html>
